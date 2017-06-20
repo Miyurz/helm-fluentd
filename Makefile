@@ -1,11 +1,14 @@
 FLUENTD =fluentd
+TEMPLATES =$(FLUENTD)/templates
 
-HELM_CHART_PREREQS =  fluentd/templates/ fluentd/templates/ fluentd/templates/ fluentd/templates/ fluentd/values.yaml fluentd/Chart.yml
+HELM_CHART_PREREQS =  $(TEMPLATES)/fluentd-configmap.yaml \
+		      $(FLUENTD)/values.yaml  \
+		      $(FLUENTD)/Chart.yaml
 
-$(ODIR)/%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+verify: $(HELM_CHART_PREREQS)
+	@echo Helm chart is good to be packages!
 
-package: clean
+package: clean verify
 	helm package $(FLUENTD)
 
 install: package
