@@ -11,11 +11,6 @@ metadata:
     component: logging-agent
     kubernetes.io/cluster-service: "true"
 spec:
-  minReadySeconds: 10
-  updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
   template:
     metadata:
       labels:
