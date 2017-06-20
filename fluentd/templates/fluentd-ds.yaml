@@ -4,8 +4,12 @@ metadata:
   name: {{ template "fullname" . }}
   namespace: kube-system
   labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     k8s-app: fluentd-logging
     component: logging-agent
+    kubernetes.io/cluster-service: "true"
 spec:
   minReadySeconds: 10
   updateStrategy:
@@ -15,12 +19,16 @@ spec:
   template:
     metadata:
       labels:
-        k8s-app: fluentd
+        k8s-app: fluentd-logging
+        heritage: {{ .Release.Service | quote }}
+        release: {{ .Release.Name | quote }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        kubernetes.io/cluster-service: "true"
     spec:
       containers:
-      - name: fluentd
-        image: quay.io/coreos/fluentd-kubernetes:v0.12-debian-elasticsearch
-        imagePullPolicy: Always
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["fluentd", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
         env:
         - name: FLUENTD_CONFIG
@@ -32,9 +40,6 @@ spec:
             cpu: 500m
             memory: 200Mi
         ports:
-        - name: prom-metrics
-          containerPort: 24231
-          protocol: TCP
         - name: monitor-agent
           containerPort: 24220
           protocol: TCP
@@ -71,7 +76,8 @@ spec:
           name: "fluentd-config"
       terminationGracePeriodSeconds: 60
       serviceAccountName: fluentd
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
+      # We want to collect logs from all nodes. Hence no need of this. Also, we haven't yet tainted nodes.
+      #tolerations:
+      #- key: node-role.kubernetes.io/master
+      #  operator: Exists
+      #  effect: NoSchedule

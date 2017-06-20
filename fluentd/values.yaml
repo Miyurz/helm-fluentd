@@ -5,6 +5,7 @@ nameOverride: fluentd
 replicaCount: 1
 image:
   repository: gcr.io/google_containers/fluentd-elasticsearch
+  #repository: quay.io/coreos/fluentd-kubernetes:v0.12-debian-elasticsearch
   tag: 1.23
   pullPolicy: Always
 resources:
