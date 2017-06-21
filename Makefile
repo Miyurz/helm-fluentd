@@ -23,9 +23,17 @@ check_release:
 	helm get release $(FLUENTD) || echo Release not found
 
 delete: check_release
-	helm delete $(FLUENTD) --purge --namespace $(NAMESPACE)
+	helm delete $(FLUENTD) --purge
 
 .PHONY: clean
 
 clean:
 	rm -rf *.tgz
+
+cleanall: clean delete
+
+show:
+	helm list --namespace $(NAMESPACE)
+	kubectl get pods --namespace=kube-system | grep $(FLUENTD) || true;
+	kubectl get serviceaccounts -n kube-system | grep $(FLUENTD) || true;
+	kubectl get daemonsets -n kube-system | grep $(FLUENTD)	|| true;
