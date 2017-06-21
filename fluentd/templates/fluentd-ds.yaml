@@ -24,8 +24,8 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        #command: ["fluentd", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
-        command: ["/usr/sbin/td-agent", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
+        command: ["fluentd", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
+        #command: ["/usr/sbin/td-agent", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
         env:
         - name: FLUENTD_CONFIG
           value: fluentd-standalone.conf

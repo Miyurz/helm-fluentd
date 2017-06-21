@@ -4,9 +4,11 @@
 nameOverride: fluentd
 replicaCount: 1
 image:
-  repository: gcr.io/google_containers/fluentd-elasticsearch
+  repository: mayurnagekar/fluentd-k8s
+  #repository: gcr.io/google_containers/fluentd-elasticsearch
   #repository: quay.io/coreos/fluentd-kubernetes:v0.12-debian-elasticsearch
-  tag: 1.23
+  #tag: 1.23
+  tag: latest
   pullPolicy: Always
 resources:
   limits:
