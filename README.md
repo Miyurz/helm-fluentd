@@ -19,6 +19,7 @@ This repository contains code to setup logging for the kubernetes clusters. It u
 AWS-Elasticsearch is a popular search and analytics engine for log analytics, full text search, application monitoring etc. This repo uses the AWS-elasticsearch service to create a elasticsearch cluster and kibana dashboard for visualization. It uses the `elasticsearch version-5.3` and `Kibana 5.3`.
 
 
+
 ## Tasks Involved:
 * Create a Helm chart for Fluentd with `fluent.conf` and other configuration files.
 * Create a new hosted AWS Elasticsearch service.Need to automate the same with CF teamplate.
